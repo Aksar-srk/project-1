@@ -104,8 +104,7 @@ pipeline {
         stage('Deploy to EKS') {
             steps {
                 sh '''
-                    sed -i "s|image: .*|image: $IMAGE_REPO:$BUILD_NUMBER|" \
-                      kubernetes/deploy-svc.yaml
+                    sed -i '/image: /s|image: .*|image: '"$IMAGE_REPO:$BUILD_NUMBER"'|' kubernetes/deploy-svc.yaml  
 
                     kubectl apply -n "$K8S_NAMESPACE" \
                       -f kubernetes/deploy-svc.yaml
